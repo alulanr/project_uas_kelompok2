@@ -1,284 +1,171 @@
-import os
+from prettytable import PrettyTable
 from datetime import datetime
 
-current = datetime.now()
-tahun = current.year
-bulan = current.month
-hari = current.day
-import datetime
-x = datetime.datetime.now()
-waktu = (x.strftime("%H:%M:%p"))
+def tampilkan_tabel_menu(tabel_menu, daftar_menu, judul):
+    for i, (menu, harga) in enumerate(daftar_menu, start=1):
+        tabel_menu.add_row([i, menu, harga])
 
-ulangah="y"
-while ulangah=="y":
-    print("""
-------------------------------------------------------------
-                LOGIN ADMIN ANGKRINGAN MODERN
-                        KOTA TEGAL
-------------------------------------------------------------
-Silahkan Masukkan Username dan Password
-Pass admin
-    """)
-    user=input("Masukkan Username   : ")
-    password=input("Masukkan Password   : ")
-    if password=="admin":
-        ulangin="y"
-        while ulangin=="y":
-            print("""
-------------------------------------------------------------
-            SELAMAT DATANG DI ANGKRINGAN MODERN
-                        KOTA TEGAL
-------------------------------------------------------------
-1. Menu Angkringan Modern
-2. Logout
-------------------------------------------------------------
-            """)
-            pilih = input("Pilih sesuai kebutuhan Anda : ")
+    print(f"{judul}:")
+    print(tabel_menu)
 
-# Start Menu
-            if pilih == "1" or pilih == "menu":
-                ripit = "ok"
-                while ripit == "ok":
-                    print("""
+def hitung_total_pesanan(pesanan):
+    total_harga = sum(harga * porsi for _, harga, porsi, _ in pesanan)
+    return total_harga
 
-------------------------------------------------------------
-            SELAMAT DATANG DI ANGKRINGAN MODERN
-                        KOTA TEGAL
-------------------------------------------------------------
+def simpan_struk(pesanan, nama_pembeli, total_harga, uang_bayar, kembalian, waktu_sekarang):
+    # Menulis informasi struk
+    print("=================================================")
+    print("|                 ANGKRINGAN MODERN             |")
+    print("|           Jl. Semeru No. 6 Kota Tegal         |")
+    print("=================================================")
+    print(f" Tanggal        : {waktu_sekarang.year}-{waktu_sekarang.month}-{waktu_sekarang.day}")
+    print(f" Jam            : {waktu_sekarang.strftime('%H:%M:%S')}")
+    print(f" Nama Pembeli   : {nama_pembeli}")
+    print("=================================================")
 
-------------------------------------------------------------
-                 Kasir Angkringan Modern          
-------------------------------------------------------------
+    tabel_struk_pesanan = PrettyTable()
+    tabel_struk_pesanan.field_names = ["No", "Menu", "Harga", "Porsi", "Kategori"]
+    for i, (menu, harga, porsi, kategori) in enumerate(pesanan, start=1):
+        tabel_struk_pesanan.add_row([i, menu, harga, porsi, kategori])
 
-""")
-                    pembeli = input("Nama Pembeli   : ")
+    print(tabel_struk_pesanan)
+    print("=================================================")
 
-                    print("""
+    print(f" Tagihan        : Rp. {total_harga}")
 
-~ Menu Makanan ~                             |    ~ Menu Minuman ~
-1. Nasi Bakar             - Rp 7.000,-         |    1. Es Teh      - Rp 3.000,-
-2. Nasi Kucing            - Rp 5.000,-         |    2. Teh Anget   - Rp 2.500,-
-3. Indomie Goreng / Rebus - Rp 8.000,-         |    3. Es Jeruk    - Rp 3.500,- 
-4. Mendoan                - Rp 10.000,-        |    4. Jeruk Anget - Rp 4.000,-
-5. Pepes Ayam             - Rp 4.500,-         |    5. Es Kopi     - Rp 4.500,-
-6. Sate Usus              - Rp 3.000,-         |    6. Kopi Susu   - Rp 4.000,-
-7. Sate Ati               - Rp 3.000,-         |    7. Kopi Tubruk - Rp 4.000,-
-8. Sate Ampela            - Rp 3.000,-         |    8. Kopi Jos    - Rp 5.000,-
-9. Sate Telur Puyuh       - Rp 3.000,-         |    9. Jahe Susu   - Rp 5.000,-
-10. Sate Seafood          - Rp 2.000,-         |    10. Wedang Jahe - Rp 4.000,-
-11. Sate Kulit            - Rp 3.000,-         |    
-12. Sosis Bakar           - Rp 3.000,-         |    
-13. Bakso Bakar           - Rp 3.000,-         |  
-
-00. Kembali Ke Awal
-""")
-   
-                    banyak_pesan = int(input("Banyak Pesanan : "))
-                    if banyak_pesan > 13:
-                        print("\nMenu tidak ada, silahkan pilih lagi")
-                        ripit = "ok"
-                        break
-                    
-
-                    uang      = [0]
-                    kembalian = [0]
-                    
-                    total_minuman = 0
-                    jenis_minuman = ""
-                    porsi = 0
-                    gelas = 0
-
-                    total_makanan = 0
-                    jenis_makanan = ""
-                    total_minuman = 0
-                    jenis_minuman = ""
-                    totalsemua = 0
-                    totalsemua = ""
-
-                    i = 0
-                    for i in range(banyak_pesan):
-                        print("Pesanan ke - ", i+1)
-                        nomor_makanan = (int(input("\nPilihan Makanan : ")))
-                        porsi = (int(input("Berapa Porsi    : ")))
-                        nomor_minuman = (int(input("Pilihan Minuman : ")))
-                        gelas = (int(input("Berapa Gelas    : ")))
-
-                        i += 1
-
-                        def fungsimakanan():
-                            global nomor_makanan
-                            global total_makanan
-                            global jenis_makanan
-                            global porsi
-                            if (nomor_makanan == 1):
-                                total_makanan = (porsi * 7000)
-                                print (porsi," porsi Nasi Bakar = Rp", total_makanan)
-                                jenis_makanan = ("Nasi Bakar")
-                            elif (nomor_makanan == 2):
-                                total_makanan = (porsi * 5000)
-                                print (porsi," porsi Nasi Kucing = Rp", total_makanan)
-                                jenis_makanan = ("Nasi Kucing")
-                            elif (nomor_makanan == 3):
-                                total_makanan = (porsi * 8000)
-                                print (porsi, " porsi Indomie Goreng / Rebus = Rp", total_makanan)
-                                jenis_makanan = ("Indomie Goreng / Rebus")
-                            elif (nomor_makanan == 4):
-                                total_makanan = (porsi * 10000)
-                                print (porsi, " porsi Mendoan = Rp", total_makanan)
-                                jenis_makanan = ("Mendoan")
-                            elif (nomor_makanan == 5):
-                                total_makanan = (porsi * 4500)
-                                print (porsi, " Pepes Ayam = Rp", total_makanan)
-                                jenis_makanan = ("Pepes Ayam")
-                            elif (nomor_makanan == 6): 
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Sate Usus = Rp", total_makanan)
-                                jenis_makanan = ("Sate Usus")
-                            elif (nomor_makanan == 7):
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Sate Ati = Rp", total_makanan)
-                                jenis_makanan = ("Sate Ati")
-                            elif (nomor_makanan == 8):
-                                total_makanan = (porsi * 3000)
-                                print (porsi ," Sate Ampela = Rp", total_makanan)
-                                jenis_makanan = ("Sate Ampela")
-                            elif (nomor_makanan == 9):
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Sate Telur Puyuh = Rp", total_makanan)
-                                jenis_makanan = ("Sate Telur Puyuh")
-                            elif (nomor_makanan == 10):
-                                total_makanan = (porsi * 2000)
-                                print (porsi, " Sate Seafood = Rp", total_makanan)
-                                jenis_makanan = ("Sate Seafood")
-                            elif (nomor_makanan == 11):
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Sate Kulit = Rp", total_makanan)
-                                jenis_makanan = ("Sate Kulit")
-                            elif (nomor_makanan == 12): 
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Sosis Bakar = Rp", total_makanan)
-                                jenis_makanan = ("Sosis Bakar")
-                            elif (nomor_makanan == 13):
-                                total_makanan = (porsi * 3000)
-                                print (porsi, " Baso Bakar = Rp", total_makanan)
-                                jenis_makanan = ("Baso Bakar")           
-                            else:
-                                total_makanan = (porsi * 0)
-                                jenis_makanan = ("Pilihan tidak ada, silahkan masukan lagi!!")   
-
-                        def fungsiminuman():
-                            global nomor_minuman
-                            global total_minuman
-                            global jenis_minuman
-                            global gelas
-                            if (nomor_minuman == 1):
-                                total_minuman = (gelas * 3000)
-                                print (gelas," Gelas Es Teh = Rp", total_minuman)
-                                jenis_minuman = ("Gelas Es Teh")
-                            elif (nomor_minuman == 2):
-                                total_minuman = (gelas * 2500)
-                                print (gelas, " Gelas Teh Anget = Rp", total_minuman)
-                                jenis_minuman = ("Teh Anget")
-                            elif (nomor_minuman == 3):
-                                total_minuman = (gelas * 3500)
-                                print (gelas, " Gelas Es Jeruk = Rp", total_minuman)
-                                jenis_minuman = ("Es Jeruk")
-                            elif (nomor_minuman == 4):
-                                total_minuman = (gelas * 4000)
-                                print (gelas, " Gelas Jeruk Anget = Rp", total_minuman)
-                                jenis_minuman = ("Jeruk Anget")
-                            elif (nomor_minuman == 5):
-                                total_minuman = (gelas * 4500)
-                                print (gelas, " Gelas Es Kopi = Rp", total_minuman)
-                                jenis_minuman = ("Es Kopi")
-                            elif (nomor_minuman == 6):
-                                total_minuman = (gelas * 4000)
-                                print (gelas, " Gelas Kopi Susu = Rp", total_minuman)
-                                jenis_minuman = ("Kopi Susu")
-                            elif (nomor_minuman == 7):
-                                total_minuman = (gelas * 4000)
-                                print (gelas, " Gelas Kopi Tubruk = Rp", total_minuman)
-                                jenis_minuman = ("Kopi Tubruk")
-                            elif (nomor_minuman == 8):
-                                total_minuman = (gelas * 5000)
-                                print (gelas, " Gelas Kopi Jos = Rp", total_minuman)
-                                jenis_minuman = ("Kopi Jos")
-                            elif (nomor_minuman == 9):
-                                total_minuman = (gelas * 5000)
-                                print (gelas, " Gelas Jahe Susu = Rp", total_minuman)
-                                jenis_minuman = ("Jahe Susu")
-                            elif (nomor_minuman == 10):
-                                total_minuman = (gelas * 4000)
-                                print (gelas, " Gelas Wedang Jahe = Rp", total_minuman)
-                                jenis_minuman = ("Wedang Jahe")   
-                            else:
-                                total_minuman = (porsi * 0)
-                                jenis_minuman = ("Pilihan tidak ada, silahkan masukan lagi!!")   
-                        
-                        i += 1
-                         
-                        def order_jadi():
-                            global total_makanan
-                            global total_minuman
-                            global totalsemua
-                            totalsemua = (total_makanan + total_minuman)
-                            print("\nTotal harus Dibayar : Rp",totalsemua)
-                            uang = int(input("Uang Tunai Pembeli  : Rp "))
-                            kembalian = int(uang - totalsemua)
-                            print("Kembalian  :",kembalian)
-
-                            
-
-                            os.system('cls')
-
-            
-                            print("-------------------------------------")
-                            print("|         ANGKRINGAN MODERN         |")
-                            print("|    Jl. Semeru No. 6 Kota Tegal    |")
-                            print("-------------------------------------")
-                            print(" Tanggal    :"" {}/{}/{}                ".format(hari, bulan, tahun))
-                            print(" Jam        :",waktu)
-                            print(" Nama       :",pembeli)
-                            print("=====================================")
-
-                            if(porsi <= 0 ):
-                                print (" Beli       : Tidak membeli makanan")
-                                print ("             ",gelas,jenis_minuman,"-", total_minuman)
-                            elif(gelas <= 0):
-                                print (" Beli       :",porsi,jenis_makanan,"-", total_makanan)
-                                print (" Beli       : Tidak membeli minuman")
-                            else:
-                                print (" Beli       :",porsi,jenis_makanan,"-", total_makanan)
-                                print ("             ",gelas,jenis_minuman,"-", total_minuman)
-
-                                print("_____")
-                                print("              Tagihan    : Rp.",totalsemua)
-                                print("              Uang       : Rp.",uang)
-                                print("              Kembalian  : Rp.",kembalian)
-                                print("=====================================")
-                                print("|    TERIMA KASIH TELAH MEMBELI     |")
-                                print("|       DI ANGKRINGAN MODERN        |")
-                                print("=====================================")
-                                
-                        
-                        fungsimakanan()
-                        fungsiminuman()
-                        order_jadi()
-                        os.system('exit')
-                                        
-
-# Kembali Logout
-            elif pilih == "4" or pilih == "ulang":
-                ulangin = "y"
-                break
-            else:
-                ulangin=input("Pilihan tidak ada apakah anda ingin mengulangi (y/n) : ")
-    else:
-        print("\nPassword salah!\n")
-        ulangin=input("Apakah anda ingin login kembali (y/n) : ")
-        if ulangin== "n":
-            exit()
+    while True:
+        uang_bayar = int(input(" Uang           : Rp. "))
+        if uang_bayar < total_harga:
+            print("Uang yang dibayarkan kurang. Silakan masukkan nominal uang yang mencukupi.")
         else:
-            os.system('exit')
-                            
-            exit()
+            break
+
+    kembalian = uang_bayar - total_harga
+    print(f" Kembalian      : Rp. {kembalian}")
+
+    print("==================================================")
+    print("|            TERIMA KASIH TELAH MEMBELI          |")
+    print("|                DI ANGKRINGAN MODERN            |")
+    print("==================================================")
+
+def login_admin():
+    print("""
+-------------------------------------------------
+          LOGIN ADMIN ANGKRINGAN MODERN
+                    KOTA TEGAL
+-------------------------------------------------
+    """)
+    # Set password yang benar
+    password_benar = "admin"
+
+    # Gunakan loop untuk meminta password hingga benar
+    while True:
+        user = input("Masukkan Username   : ")
+        password = input("Masukkan Password   : ")
+
+        if password == password_benar:
+            print("Login berhasil.")
+            return True
+        else:
+            print("Username atau Password salah. Silakan coba lagi.")
+            continue
+
+def main():
+    if not login_admin():
+        return
+
+    print("""
+-------------------------------------------------
+        SELAMAT DATANG DI ANGKRINGAN MODERN
+                    KOTA TEGAL
+-------------------------------------------------
+    """)
+
+    nama_pembeli = input("Masukkan nama pembeli: ")
+
+    tabel_menu_pesanan = PrettyTable()
+    tabel_menu_pesanan.field_names = ["No", "Menu", "Harga"]
+
+    # Daftar menu makanan
+    daftar_menu_makanan = [
+        ("Nasi Bakar", 7000),
+        ("Nasi Kucing", 5000),
+        ("Mie Goreng", 10000),
+        ("Mie Rebus", 10000),
+        ("Mendoan", 10000),
+        ("Pepes Ayam", 4500),
+        ("Sate Usus", 3000),
+        ("Sate Ati", 3000),
+        ("Sate Ampela", 3000),
+        ("Sate Telur Puyuh", 3000),
+        ("Sate Seafood", 3000),
+        ("Sosis Bakar", 3000),
+        ("Bakso Bakar", 3000),
+    ]
+
+    # Daftar menu minuman
+    daftar_menu_minuman = [
+        ("Es Teh", 3000),
+        ("Teh Anget", 3000),
+        ("Es Jeruk", 3500),
+        ("Jeruk Anget", 4000),
+        ("Es Kopi", 5000),
+        ("Kopi Susu", 5000),
+        ("Kopi Tubruk", 7000),
+        ("Kopi Jos", 8000),
+        ("Jahe Susu", 5000),
+        ("Wedang Jahe", 5000),
+    ]
+
+    pesanan = []
+    lanjut_pesan = True
+
+    while lanjut_pesan:
+        print("\nPilihan Menu:")
+        print("1. Makanan")
+        print("2. Minuman")
+
+        kategori_menu = input("Pilih kategori menu (1/2): ")
+
+        if kategori_menu == "1":
+            tabel_menu_pesanan.clear_rows()
+            tampilkan_tabel_menu(tabel_menu_pesanan, daftar_menu_makanan, "Menu Makanan")
+        elif kategori_menu == "2":
+            tabel_menu_pesanan.clear_rows()
+            tampilkan_tabel_menu(tabel_menu_pesanan, daftar_menu_minuman, "Menu Minuman")
+        else:
+            print("Pilihan tidak valid. Silakan pilih kembali.")
+            continue
+
+        input_nomor_menu = input("Pilih nomor menu yang dipisahkan oleh spasi: ")
+        nomor_menu_list = [int(nomor) for nomor in input_nomor_menu.split()]
+
+        for nomor_menu in nomor_menu_list:
+            if 1 <= nomor_menu <= len(daftar_menu_makanan) and kategori_menu == "1":
+                menu_dipesan = (daftar_menu_makanan[nomor_menu - 1][0], daftar_menu_makanan[nomor_menu - 1][1])
+                porsi = int(input(f"Masukkan jumlah porsi untuk {menu_dipesan[0]}: "))
+                pesanan.append((menu_dipesan[0], menu_dipesan[1], porsi, "Makanan"))
+            elif 1 <= nomor_menu <= len(daftar_menu_minuman) and kategori_menu == "2":
+                menu_dipesan = (daftar_menu_minuman[nomor_menu - 1][0], daftar_menu_minuman[nomor_menu - 1][1])
+                porsi = int(input(f"Masukkan jumlah porsi untuk {menu_dipesan[0]}: "))
+                pesanan.append((menu_dipesan[0], menu_dipesan[1], porsi, "Minuman"))
+            else:
+                print(f"Nomor menu {nomor_menu} tidak valid. Silakan pilih kembali.")
+                continue
+
+        jawab = input("Apakah Anda ingin memesan lagi? (ya/tidak): ")
+        if jawab.lower() != "ya":
+            lanjut_pesan = False
+
+    waktu_sekarang = datetime.now()
+    hari, bulan, tahun = waktu_sekarang.day, waktu_sekarang.month, waktu_sekarang.year
+    waktu = waktu_sekarang.strftime("%H:%M:%S")
+
+    total_harga = hitung_total_pesanan(pesanan)
+
+    # Menampilkan struk pembayaran di terminal
+    simpan_struk(pesanan, nama_pembeli, total_harga, 0, 0, waktu_sekarang)
+    print(f"Struk pembayaran telah ditampilkan.")
+
+if __name__ == "__main__":
+    main()
